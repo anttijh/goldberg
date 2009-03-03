@@ -8,7 +8,7 @@ module Goldberg
           if not @prefix
             if self.pg_conn?
               self.create_goldberg_schema
-              @prefix = 'goldberg.'
+              @prefix = 'goldberg_'
             else
               @prefix = 'goldberg_'
             end

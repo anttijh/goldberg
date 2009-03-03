@@ -16,7 +16,7 @@ module Goldberg
           if not @prefix
             if self.connection.class.to_s == 
                 'ActiveRecord::ConnectionAdapters::PostgreSQLAdapter'
-              @prefix = 'goldberg.'
+              @prefix = 'goldberg_'
             else
               @prefix = 'goldberg_'
             end
@@ -40,6 +40,8 @@ module Goldberg
       base.class_eval do
         alias_method :pk_and_sequence_for_without_goldberg, :pk_and_sequence_for
         alias_method :pk_and_sequence_for, :pk_and_sequence_for_with_goldberg
+        alias_method_chain :quote_column_name, :goldberg
+        alias_method_chain :quote_table_name, :goldberg
       end
     end
 
@@ -102,6 +104,13 @@ module Goldberg
       nil
     end
     
+    def quote_column_name_with_goldberg(name)
+      name
+    end
+    
+    def quote_table_name_with_goldberg(name)
+      quote_column_name_with_goldberg(name)
+    end
   end
 end
 
